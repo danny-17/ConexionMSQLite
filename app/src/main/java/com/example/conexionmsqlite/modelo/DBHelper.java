@@ -1,6 +1,7 @@
 package com.example.conexionmsqlite.modelo;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -18,12 +19,12 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String sql="CREATE TABLE " + TABLA_PERSONAS + " (" +
-                "id_persona INTEGER," +
-                "nombre TEXT," +
-                "apellido TEXT," +
-                "email TEXT," +
-                " telefono TEXT, " +
-                "PRIMARY KEY(\"id_persona\")" +
+                "id_persona INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT NOT NULL," +
+                "apellido TEXT ," +
+                "email TEXT NOT NULL," +
+                "telefono TEXT, " +
+                "edad INTEGER " +
                 ")";
         sqLiteDatabase.execSQL(sql);
     }
@@ -34,5 +35,13 @@ public class DBHelper extends SQLiteOpenHelper {
         //Borra las tablas
         sqLiteDatabase.execSQL(sqld);
         onCreate(sqLiteDatabase);
+    }
+
+    public void noQuery(String nsql){
+        this.getWritableDatabase().execSQL(nsql);
+    }
+
+    public Cursor query(String sql){
+        return this.getReadableDatabase().rawQuery(sql, null);
     }
 }
